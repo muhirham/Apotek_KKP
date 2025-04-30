@@ -152,8 +152,8 @@ public class login extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Berhasil login sebagai Admin");
                     admin adm = new admin();
                     adm.setVisible(true);
-                } else if ("manager".equals(role)) {
-                    JOptionPane.showMessageDialog(null, "Berhasil login sebagai Master");
+                } else if ("superadmin".equals(role)) {
+                    JOptionPane.showMessageDialog(null, "Berhasil login sebagai Super Admin");
                     superadmin suadm = new superadmin();
                     suadm.setVisible(true);
                 }
