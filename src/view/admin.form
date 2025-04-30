@@ -907,7 +907,6 @@
         </Container>
         <Component class="javax.swing.JTextField" name="txtcariSuplayer">
           <Events>
-            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtcariSuplayerMousePressed"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtcariSuplayerActionPerformed"/>
             <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtcariSuplayerKeyPressed"/>
           </Events>

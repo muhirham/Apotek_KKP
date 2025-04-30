@@ -786,11 +786,6 @@ public class admin extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTablesuplayer);
 
-        txtcariSuplayer.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                txtcariSuplayerMousePressed(evt);
-            }
-        });
         txtcariSuplayer.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtcariSuplayerActionPerformed(evt);
@@ -1021,7 +1016,7 @@ public class admin extends javax.swing.JFrame {
         );
 
         getContentPane().add(pKategori);
-        pKategori.setBounds(181, 66, 763, 627);
+        pKategori.setBounds(181, 66, 761, 627);
 
         pRfobat.setBackground(new java.awt.Color(255, 255, 102));
 
@@ -1282,7 +1277,7 @@ public class admin extends javax.swing.JFrame {
                                     .addGroup(pObatLayout.createSequentialGroup()
                                         .addGap(59, 59, 59)
                                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(16, 16, 16))
@@ -1687,10 +1682,6 @@ public class admin extends javax.swing.JFrame {
             e.printStackTrace();
         }        // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void txtcariSuplayerMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtcariSuplayerMousePressed
-               // TODO add your handling code here:
-    }//GEN-LAST:event_txtcariSuplayerMousePressed
 
     private void txtcariSuplayerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcariSuplayerKeyPressed
         cariSuplayer();        // TODO add your handling code here:
