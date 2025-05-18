@@ -155,7 +155,25 @@ public class superadmin extends javax.swing.JFrame {
             }
         
 
-
+        protected void cariKategori(){
+        Object[] Baris = {"Nomor", "Nama Kategori"};
+        tabmodeKategori = new DefaultTableModel(null, Baris);
+        jTablekategori.setModel(tabmodeKategori);
+        String keyword = txtcarikategori.getText();
+        String sql = "select * from kategori_Obat where id_kategori like '%"+keyword+"%' or nama_kategori like '%"+keyword+"%' order by id_kategori asc";
+        try{
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("id_kategori");
+                String b = hasil.getString("nama_kategori");
+                
+                    String[] data = {a,b};
+                tabmodeKategori.addRow(data);
+            }
+        }catch(Exception e){
+        }
+        }
     
         protected void datatableUser() {
         // Define the column names as per the previous array
@@ -446,6 +464,8 @@ protected void cariUser(){
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        txtcarikategori = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
         pUser = new javax.swing.JPanel();
         id = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -487,7 +507,6 @@ protected void cariUser(){
         jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 800));
         setSize(new java.awt.Dimension(0, 0));
 
         pn_navbar.setBackground(new java.awt.Color(0, 0, 0));
@@ -900,6 +919,15 @@ protected void cariUser(){
             }
         });
 
+        txtcarikategori.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtcarikategoriKeyReleased(evt);
+            }
+        });
+
+        jLabel12.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel12.setText("Cari Kategori");
+
         javax.swing.GroupLayout pKategoriLayout = new javax.swing.GroupLayout(pKategori);
         pKategori.setLayout(pKategoriLayout);
         pKategoriLayout.setHorizontalGroup(
@@ -907,13 +935,17 @@ protected void cariUser(){
             .addGroup(pKategoriLayout.createSequentialGroup()
                 .addGroup(pKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pKategoriLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel15))
-                    .addGroup(pKategoriLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
                         .addComponent(jButton1))
+                    .addGroup(pKategoriLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(52, 52, 52)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pKategoriLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -922,22 +954,26 @@ protected void cariUser(){
                         .addGap(41, 41, 41)
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtktgri, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pKategoriLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtktgri, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(187, Short.MAX_VALUE))
+            .addGroup(pKategoriLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel15)
+                .addGap(292, 292, 292)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtcarikategori)
+                .addGap(39, 39, 39))
         );
         pKategoriLayout.setVerticalGroup(
             pKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pKategoriLayout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel15)
-                .addGap(38, 38, 38)
+                .addGap(23, 23, 23)
+                .addGroup(pKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(txtcarikategori, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
                 .addGroup(pKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pKategoriLayout.createSequentialGroup()
@@ -1199,14 +1235,14 @@ protected void cariUser(){
             .addGroup(pRfobatLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel16)
-                .addContainerGap(622, Short.MAX_VALUE))
+                .addContainerGap(627, Short.MAX_VALUE))
         );
         pRfobatLayout.setVerticalGroup(
             pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pRfobatLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel16)
-                .addContainerGap(539, Short.MAX_VALUE))
+                .addContainerGap(537, Short.MAX_VALUE))
         );
 
         pObat.setBackground(new java.awt.Color(102, 0, 51));
@@ -1290,7 +1326,7 @@ protected void cariUser(){
                     .addComponent(pKategori, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 188, Short.MAX_VALUE)
+                    .addGap(0, 183, Short.MAX_VALUE)
                     .addComponent(pRfobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -1325,8 +1361,8 @@ protected void cariUser(){
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(67, 67, 67)
-                    .addComponent(pRfobat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(69, Short.MAX_VALUE)
+                    .addComponent(pRfobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -1682,6 +1718,11 @@ protected void cariUser(){
         dataterpilihKategori();
     }//GEN-LAST:event_jTablekategoriMouseClicked
 
+    private void txtcarikategoriKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcarikategoriKeyReleased
+        // TODO add your handling code here:
+        cariKategori();
+    }//GEN-LAST:event_txtcarikategoriKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -1733,6 +1774,7 @@ protected void cariUser(){
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1810,6 +1852,7 @@ protected void cariUser(){
     private javax.swing.JTextField searchUser;
     private javax.swing.JTable tableUser;
     private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtcarikategori;
     private javax.swing.JTextField txtktgri;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
