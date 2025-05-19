@@ -530,7 +530,7 @@ protected void cariUser(){
             .addGroup(pn_navbarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 679, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 692, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
         );
@@ -846,19 +846,19 @@ protected void cariUser(){
             .addGroup(pHomeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel14)
-                .addContainerGap(598, Short.MAX_VALUE))
+                .addContainerGap(611, Short.MAX_VALUE))
         );
         pHomeLayout.setVerticalGroup(
             pHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pHomeLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel14)
-                .addContainerGap(536, Short.MAX_VALUE))
+                .addContainerGap(655, Short.MAX_VALUE))
         );
 
         pKategori.setBackground(new java.awt.Color(102, 204, 255));
         pKategori.setMaximumSize(new java.awt.Dimension(1280, 800));
-        pKategori.setPreferredSize(new java.awt.Dimension(752, 572));
+        pKategori.setPreferredSize(new java.awt.Dimension(766, 695));
 
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("KATEGORI");
@@ -933,21 +933,19 @@ protected void cariUser(){
         pKategoriLayout.setHorizontalGroup(
             pKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pKategoriLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
                 .addGroup(pKategoriLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pKategoriLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(45, 45, 45)
                         .addComponent(jButton1))
                     .addGroup(pKategoriLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(52, 52, 52)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(54, 54, 54)
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pKategoriLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -955,7 +953,7 @@ protected void cariUser(){
                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtktgri, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
             .addGroup(pKategoriLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addComponent(jLabel15)
@@ -990,12 +988,12 @@ protected void cariUser(){
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap(321, Short.MAX_VALUE))
         );
 
         pUser.setBackground(new java.awt.Color(0, 153, 153));
         pUser.setMaximumSize(new java.awt.Dimension(1280, 800));
-        pUser.setPreferredSize(new java.awt.Dimension(748, 531));
+        pUser.setPreferredSize(new java.awt.Dimension(766, 695));
 
         id.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
@@ -1225,6 +1223,7 @@ protected void cariUser(){
 
         pRfobat.setBackground(new java.awt.Color(51, 51, 255));
         pRfobat.setMaximumSize(new java.awt.Dimension(1280, 800));
+        pRfobat.setPreferredSize(new java.awt.Dimension(766, 695));
 
         jLabel16.setText("Request Form Obat");
 
@@ -1235,14 +1234,14 @@ protected void cariUser(){
             .addGroup(pRfobatLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel16)
-                .addContainerGap(627, Short.MAX_VALUE))
+                .addContainerGap(642, Short.MAX_VALUE))
         );
         pRfobatLayout.setVerticalGroup(
             pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pRfobatLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel16)
-                .addContainerGap(537, Short.MAX_VALUE))
+                .addContainerGap(659, Short.MAX_VALUE))
         );
 
         pObat.setBackground(new java.awt.Color(102, 0, 51));
@@ -1264,11 +1263,12 @@ protected void cariUser(){
             .addGroup(pObatLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel18)
-                .addContainerGap(540, Short.MAX_VALUE))
+                .addContainerGap(659, Short.MAX_VALUE))
         );
 
         pPenjualan.setBackground(new java.awt.Color(255, 0, 255));
         pPenjualan.setMaximumSize(new java.awt.Dimension(1280, 800));
+        pPenjualan.setPreferredSize(new java.awt.Dimension(766, 695));
 
         jLabel19.setText("Form Penjualan Obat");
 
@@ -1279,18 +1279,19 @@ protected void cariUser(){
             .addGroup(pPenjualanLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel19)
-                .addContainerGap(616, Short.MAX_VALUE))
+                .addContainerGap(632, Short.MAX_VALUE))
         );
         pPenjualanLayout.setVerticalGroup(
             pPenjualanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPenjualanLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel19)
-                .addContainerGap(541, Short.MAX_VALUE))
+                .addContainerGap(660, Short.MAX_VALUE))
         );
 
         pPembelian.setBackground(new java.awt.Color(255, 204, 204));
         pPembelian.setMaximumSize(new java.awt.Dimension(1280, 800));
+        pPembelian.setPreferredSize(new java.awt.Dimension(766, 695));
 
         jLabel20.setText("Form Pembelian Obat");
 
@@ -1301,14 +1302,14 @@ protected void cariUser(){
             .addGroup(pPembelianLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel20)
-                .addContainerGap(612, Short.MAX_VALUE))
+                .addContainerGap(628, Short.MAX_VALUE))
         );
         pPembelianLayout.setVerticalGroup(
             pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPembelianLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel20)
-                .addContainerGap(541, Short.MAX_VALUE))
+                .addContainerGap(660, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1322,27 +1323,27 @@ protected void cariUser(){
                 .addComponent(pHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 182, Short.MAX_VALUE)
-                    .addComponent(pKategori, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGap(0, 178, Short.MAX_VALUE)
+                    .addComponent(pKategori, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 183, Short.MAX_VALUE)
+                    .addGap(0, 181, Short.MAX_VALUE)
                     .addComponent(pRfobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 186, Short.MAX_VALUE)
+                    .addGap(0, 181, Short.MAX_VALUE)
                     .addComponent(pUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 187, Short.MAX_VALUE)
+                    .addGap(0, 200, Short.MAX_VALUE)
                     .addComponent(pObat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 184, Short.MAX_VALUE)
+                    .addGap(0, 181, Short.MAX_VALUE)
                     .addComponent(pPenjualan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 184, Short.MAX_VALUE)
+                    .addGap(0, 181, Short.MAX_VALUE)
                     .addComponent(pPembelian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         layout.setVerticalGroup(
@@ -1352,22 +1353,22 @@ protected void cariUser(){
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pn_sidebar, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
+                    .addComponent(pn_sidebar, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(70, Short.MAX_VALUE)
-                    .addComponent(pKategori, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(65, Short.MAX_VALUE)
+                    .addComponent(pKategori, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(69, Short.MAX_VALUE)
+                    .addContainerGap(66, Short.MAX_VALUE)
                     .addComponent(pRfobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(67, 67, 67)
-                    .addComponent(pUser, javax.swing.GroupLayout.PREFERRED_SIZE, 575, Short.MAX_VALUE)
+                    .addComponent(pUser, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -1377,12 +1378,12 @@ protected void cariUser(){
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(65, 65, 65)
-                    .addComponent(pPenjualan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pPenjualan, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
                     .addContainerGap()))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addGap(65, 65, 65)
-                    .addComponent(pPembelian, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pPembelian, javax.swing.GroupLayout.DEFAULT_SIZE, 696, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
