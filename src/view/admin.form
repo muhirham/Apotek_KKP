@@ -1069,7 +1069,7 @@
     <Container class="javax.swing.JPanel" name="pRfobat">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="33" green="33" red="33" type="rgb"/>
+          <Color blue="66" green="0" red="66" type="rgb"/>
         </Property>
       </Properties>
       <Constraints>
@@ -1431,16 +1431,13 @@
                   <Component id="jScrollPane2" min="-2" pref="169" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtkodeobat" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel49" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtkodeobat" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="txtnamaobat" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txthargajual" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1461,6 +1458,7 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="txtkemasan" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtnamaobat" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -1592,7 +1590,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="txtnamaobat">
+        <Component class="javax.swing.JTextField" name="txtkodeobat">
         </Component>
         <Component class="javax.swing.JTextField" name="txtkemasan">
         </Component>
@@ -1727,7 +1725,7 @@
             <Property name="text" type="java.lang.String" value="Kode Obat"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtkodeobat">
+        <Component class="javax.swing.JTextField" name="txtnamaobat">
         </Component>
         <Component class="javax.swing.JTextField" name="txtcariObat">
           <Events>

@@ -50,9 +50,9 @@ public class admin extends javax.swing.JFrame {
         pPembelian.setVisible(false);
         pSuplayer.setVisible(false);
         
-        if (txtnamaobat.getText().isEmpty()) {
-            txtnamaobat.setText("Kode Obat");  // Menampilkan placeholder jika field kosong
-            txtnamaobat.setForeground(Color.GRAY);  // Mengatur warna placeholder menjadi abu-abu
+        if (txtkodeobat.getText().isEmpty()) {
+            txtkodeobat.setText("Kode Obat");  // Menampilkan placeholder jika field kosong
+            txtkodeobat.setForeground(Color.GRAY);  // Mengatur warna placeholder menjadi abu-abu
         }
         
         datatableSublayer();
@@ -68,6 +68,26 @@ public class admin extends javax.swing.JFrame {
         // Make the JFrame visible
         setVisible(true);
     }
+    
+    
+    private String autoKodeObat() {
+    String kode = "OBT004"; // default awal
+    try {
+        String sql = "SELECT kode_obat FROM obat ORDER BY kode_obat DESC LIMIT 1";
+        PreparedStatement pst = conn.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            String lastKode = rs.getString("kode_obat"); // contoh OBT005
+            int nomor = Integer.parseInt(lastKode.substring(3)); // ambil 005 → 5
+            nomor++; // jadi 6
+            kode = String.format("OBT%03d", nomor); // OBT006
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Gagal generate kode obat: " + e.getMessage());
+    }
+    return kode;
+}
+
     
     protected void datatableSublayer() {
         // Define the column names as per the previous array
@@ -356,7 +376,10 @@ public class admin extends javax.swing.JFrame {
 
    private void tambahObat() {
     try {
-        String kodeObat = txtkodeobat.getText();
+        String kodeObat = autoKodeObat();
+        txtkodeobat.setText(kodeObat); // tampilkan ke user (opsional)
+        txtkodeobat.setEnabled(false);
+
         String namaObat = txtnamaobat.getText();
         int hargaJual = Integer.parseInt(txthargajual.getText());
         int hargaBeli = Integer.parseInt(txthargabeli.getText());
@@ -387,13 +410,16 @@ public class admin extends javax.swing.JFrame {
 
         pst.executeUpdate();
         JOptionPane.showMessageDialog(null, "Data obat berhasil disimpan.");
-        datatableObat(); // refresh tabel
+        datatableObat();
+        clearObat();
     } catch (SQLException | NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Error menyimpan data: " + e.getMessage());
     }
 }
 
-    private void clearFieldObat() {
+
+    private void clearObat() {
+        txtkodeobat.setText(null);
         txtnamaobat.setText(null);
         txthargajual.setText(null);
         txthargabeli.setText(null);
@@ -415,7 +441,7 @@ public class admin extends javax.swing.JFrame {
 
             String kodeObat = tbObat.getValueAt(selectedRow, 0).toString();
 
-            String namaObat = txtnamaobat.getText();
+            String namaObat = txtkodeobat.getText();
             int hargaJual = Integer.parseInt(txthargajual.getText());
             int hargaBeli = Integer.parseInt(txthargabeli.getText());
             int stok = Integer.parseInt(txtstok.getText());
@@ -447,7 +473,7 @@ public class admin extends javax.swing.JFrame {
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data obat berhasil diperbarui.");
             datatableObat(); // refresh tabel
-            clearFieldObat();
+            clearObat();
         } catch (SQLException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Error mengedit data: " + e.getMessage());
         }
@@ -472,27 +498,28 @@ public class admin extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "Data obat berhasil dihapus.");
             datatableObat(); // refresh tabel
-            clearFieldObat();
+            clearObat();
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error menghapus data: " + e.getMessage());
     }
 }
-    protected void PilihObat () {
+   protected void PilihObat () {
     int row = tbObat.getSelectedRow();
     if (row != -1) {
-        txtkodeobat.setText(tbObat.getValueAt(row, 1).toString());
-        txtnamaobat.setText(tbObat.getValueAt(row, 2).toString());
-        txthargajual.setText(tbObat.getValueAt(row, 3).toString());
-        txthargabeli.setText(tbObat.getValueAt(row, 4).toString());
-        txtstok.setText(tbObat.getValueAt(row, 5).toString());
-        txtkemasan.setText(tbObat.getValueAt(row, 6).toString());
-        cbkategori.setSelectedItem(tbObat.getValueAt(row, 7).toString());
-        cbsuplayer.setSelectedItem(tbObat.getValueAt(row, 8).toString());
-        cbgolongan.setSelectedItem(tbObat.getValueAt(row, 9).toString());
-        txtnoregisbpom.setText(tbObat.getValueAt(row, 10).toString());
+        txtkodeobat.setText(tbObat.getValueAt(row, 0).toString());
+        txtnamaobat.setText(tbObat.getValueAt(row, 1).toString());
+        txthargajual.setText(tbObat.getValueAt(row, 2).toString());
+        txthargabeli.setText(tbObat.getValueAt(row, 3).toString());
+        txtstok.setText(tbObat.getValueAt(row, 4).toString());
+        txtkemasan.setText(tbObat.getValueAt(row, 5).toString());
+        cbkategori.setSelectedItem(tbObat.getValueAt(row, 6).toString());
+        cbsuplayer.setSelectedItem(tbObat.getValueAt(row, 7).toString());
+        cbgolongan.setSelectedItem(tbObat.getValueAt(row, 8).toString());
+        txtnoregisbpom.setText(tbObat.getValueAt(row, 9).toString());
     }
 }
+
     
     protected void CariObat (){
     Object[] columns = {"Kode Obat", "Nama Obat", "Harga Jual", "Harga Beli", "Stok", "Kemasan", "Kategori", "Suplier", "Golongan", "No Registrasi BPOM"};
@@ -676,7 +703,7 @@ public class admin extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbObat = new javax.swing.JTable();
-        txtnamaobat = new javax.swing.JTextField();
+        txtkodeobat = new javax.swing.JTextField();
         txtkemasan = new javax.swing.JTextField();
         txthargajual = new javax.swing.JTextField();
         txthargabeli = new javax.swing.JTextField();
@@ -699,7 +726,7 @@ public class admin extends javax.swing.JFrame {
         cbsuplayer = new javax.swing.JComboBox<>();
         cbgolongan = new javax.swing.JComboBox<>();
         jLabel49 = new javax.swing.JLabel();
-        txtkodeobat = new javax.swing.JTextField();
+        txtnamaobat = new javax.swing.JTextField();
         txtcariObat = new javax.swing.JTextField();
         jLabel50 = new javax.swing.JLabel();
 
@@ -1268,7 +1295,7 @@ public class admin extends javax.swing.JFrame {
         getContentPane().add(pKategori);
         pKategori.setBounds(181, 66, 761, 627);
 
-        pRfobat.setBackground(new java.awt.Color(51, 51, 51));
+        pRfobat.setBackground(new java.awt.Color(102, 0, 102));
 
         jLabel8.setText("RF Obat");
 
@@ -1588,14 +1615,12 @@ public class admin extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtkodeobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel49))
+                    .addComponent(jLabel49)
+                    .addComponent(txtkodeobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pObatLayout.createSequentialGroup()
-                        .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtnamaobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
+                        .addComponent(jLabel7)
                         .addGap(18, 18, 18)
                         .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txthargajual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1611,7 +1636,8 @@ public class admin extends javax.swing.JFrame {
                     .addGroup(pObatLayout.createSequentialGroup()
                         .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtkemasan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18))
+                            .addComponent(jLabel18)
+                            .addComponent(txtnamaobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbkategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
