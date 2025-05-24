@@ -50,7 +50,7 @@ public class superadmin extends javax.swing.JFrame {
         
         datatableKategori();
         datatableUser();
-        
+        datatableRfObat();
         
         setLocationRelativeTo(null);
     }
@@ -399,6 +399,41 @@ protected void cariUser(){
 
 
      
+        protected void datatableRfObat() {
+    // Sesuaikan kolom sesuai struktur tabel rf_obat
+    Object[] Baris = {
+        "ID RF", "Tanggal", "Deskripsi", "Nama Suplier", 
+        "Kode Obat", "Nama Obat", "Harga Beli", 
+        "Jumlah Pesan", "Total Harga", "Status"
+    };
+    tabmode = new DefaultTableModel(null, Baris);
+    tableRf_Obat.setModel(tabmode); // Ganti dengan nama JTable yang benar jika bukan 'tableUser'
+
+    String sql = "SELECT * FROM rf_obat ORDER BY id_rf ASC";
+    try {
+        Statement stat = conn.createStatement();
+        ResultSet hasil = stat.executeQuery(sql);
+        while (hasil.next()) {
+            String id = hasil.getString("id_rf");
+            String tanggal = hasil.getString("tanggal_rf");
+            String deskripsi = hasil.getString("deskripsi");
+            String suplier = hasil.getString("nama_suplayer");
+            String kode = hasil.getString("kode_obat");
+            String nama = hasil.getString("nama_obat");
+            String harga = hasil.getString("harga_beli");
+            String jumlah = hasil.getString("jumlah_pesanan");
+            String total = hasil.getString("total_harga");
+            String status = hasil.getString("status");
+
+            String[] data = {id, tanggal, deskripsi, suplier, kode, nama, harga, jumlah, total, status};
+            tabmode.addRow(data);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal tampilkan data: " + e.getMessage());
+    }
+}
+
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -497,6 +532,27 @@ protected void cariUser(){
         almt = new javax.swing.JTextField();
         pRfobat = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableRf_Obat = new javax.swing.JTable();
+        txtkdObat = new javax.swing.JTextField();
+        jLabel51 = new javax.swing.JLabel();
+        jLabel52 = new javax.swing.JLabel();
+        txtNamaObat = new javax.swing.JTextField();
+        jLabel53 = new javax.swing.JLabel();
+        txtJumlah = new javax.swing.JTextField();
+        jLabel54 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jLabel55 = new javax.swing.JLabel();
+        txtHargabeli = new javax.swing.JTextField();
+        jLabel57 = new javax.swing.JLabel();
+        txtnamaS = new javax.swing.JTextField();
+        jLabel56 = new javax.swing.JLabel();
+        txttotalharga = new javax.swing.JTextField();
+        jLabel58 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         pObat = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
         pPenjualan = new javax.swing.JPanel();
@@ -1221,27 +1277,160 @@ protected void cariUser(){
                 .addGap(51, 51, 51))
         );
 
-        pRfobat.setBackground(new java.awt.Color(51, 51, 255));
+        pRfobat.setBackground(new java.awt.Color(102, 102, 102));
         pRfobat.setMaximumSize(new java.awt.Dimension(1280, 800));
         pRfobat.setPreferredSize(new java.awt.Dimension(766, 695));
 
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setText("Request Form Obat");
+
+        tableRf_Obat.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tableRf_Obat);
+
+        jLabel51.setText("Kode Obat");
+
+        jLabel52.setText("Nama Obat");
+
+        jLabel53.setText("Jumlah Pesanan");
+
+        jLabel54.setText("Tanggal");
+
+        jLabel55.setText("Harga Beli");
+
+        jLabel57.setText("Nama Suplier");
+
+        jLabel56.setText("Total Harga");
+
+        txttotalharga.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txttotalhargaKeyTyped(evt);
+            }
+        });
+
+        jLabel58.setText("Total Harga");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane4.setViewportView(jTextArea1);
+
+        jButton5.setText("ACC");
+
+        jButton6.setText("Tolak");
 
         javax.swing.GroupLayout pRfobatLayout = new javax.swing.GroupLayout(pRfobat);
         pRfobat.setLayout(pRfobatLayout);
         pRfobatLayout.setHorizontalGroup(
             pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pRfobatLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel16)
-                .addContainerGap(642, Short.MAX_VALUE))
+                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pRfobatLayout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pRfobatLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pRfobatLayout.createSequentialGroup()
+                                .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(txtnamaS))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pRfobatLayout.createSequentialGroup()
+                                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pRfobatLayout.createSequentialGroup()
+                                            .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGap(26, 26, 26))
+                                        .addGroup(pRfobatLayout.createSequentialGroup()
+                                            .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(35, 35, 35)))
+                                    .addGroup(pRfobatLayout.createSequentialGroup()
+                                        .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(35, 35, 35)))
+                                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txttotalharga)
+                                    .addComponent(txtHargabeli)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtkdObat)
+                                    .addComponent(txtNamaObat)
+                                    .addComponent(txtJumlah, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))))
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(jLabel58, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pRfobatLayout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28))))
+                    .addGroup(pRfobatLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         pRfobatLayout.setVerticalGroup(
             pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pRfobatLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel16)
-                .addContainerGap(659, Short.MAX_VALUE))
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pRfobatLayout.createSequentialGroup()
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(txtkdObat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel58, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(88, 88, 88))
+                            .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(pRfobatLayout.createSequentialGroup()
+                                    .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(pRfobatLayout.createSequentialGroup()
+                                    .addComponent(txtNamaObat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(18, 18, 18)
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtnamaS, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtHargabeli, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txttotalharga, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
 
         pObat.setBackground(new java.awt.Color(102, 0, 51));
@@ -1724,6 +1913,11 @@ protected void cariUser(){
         cariKategori();
     }//GEN-LAST:event_txtcarikategoriKeyReleased
 
+    private void txttotalhargaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttotalhargaKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txttotalhargaKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -1772,6 +1966,9 @@ protected void cariUser(){
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1812,14 +2009,25 @@ protected void cariUser(){
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
+    private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTablekategori;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel jf;
     private javax.swing.JLabel jf1;
     private javax.swing.JPanel jtest2;
@@ -1851,10 +2059,17 @@ protected void cariUser(){
     private javax.swing.JComboBox<String> rolle;
     private javax.swing.JButton save;
     private javax.swing.JTextField searchUser;
+    private javax.swing.JTable tableRf_Obat;
     private javax.swing.JTable tableUser;
+    private javax.swing.JTextField txtHargabeli;
     private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtJumlah;
+    private javax.swing.JTextField txtNamaObat;
     private javax.swing.JTextField txtcarikategori;
+    private javax.swing.JTextField txtkdObat;
     private javax.swing.JTextField txtktgri;
+    private javax.swing.JTextField txtnamaS;
+    private javax.swing.JTextField txttotalharga;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 }
