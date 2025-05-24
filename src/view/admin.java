@@ -11,9 +11,12 @@ import java.sql.Connection;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
 import databases.koneksi;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -50,16 +53,20 @@ public class admin extends javax.swing.JFrame {
         pPembelian.setVisible(false);
         pSuplayer.setVisible(false);
         
-        if (txtkodeobat.getText().isEmpty()) {
-            txtkodeobat.setText("Kode Obat");  // Menampilkan placeholder jika field kosong
-            txtkodeobat.setForeground(Color.GRAY);  // Mengatur warna placeholder menjadi abu-abu
+        if (txtnamaobat.getText().isEmpty()) {
+            txtnamaobat.setText("Kode Obat");  // Menampilkan placeholder jika field kosong
+            txtnamaobat.setForeground(Color.GRAY);  // Mengatur warna placeholder menjadi abu-abu
         }
+        
+       
+
         
         datatableSublayer();
         datatableObat();
         RftableObat();
         cbKategori();
         cbSuplayer();
+        Tb_RfObat();
         
         setSize(947, 650);
         
@@ -377,10 +384,10 @@ public class admin extends javax.swing.JFrame {
    private void tambahObat() {
     try {
         String kodeObat = autoKodeObat();
-        txtkodeobat.setText(kodeObat); // tampilkan ke user (opsional)
-        txtkodeobat.setEnabled(false);
+        txtnamaobat.setText(kodeObat); // tampilkan ke user (opsional)
+        txtnamaobat.setEnabled(false);
 
-        String namaObat = txtnamaobat.getText();
+        String namaObat = txtkodeobat.getText();
         int hargaJual = Integer.parseInt(txthargajual.getText());
         int hargaBeli = Integer.parseInt(txthargabeli.getText());
         int stok = Integer.parseInt(txtstok.getText());
@@ -419,8 +426,8 @@ public class admin extends javax.swing.JFrame {
 
 
     private void clearObat() {
-        txtkodeobat.setText(null);
         txtnamaobat.setText(null);
+        txtkodeobat.setText(null);
         txthargajual.setText(null);
         txthargabeli.setText(null);
         txtstok.setText(null);
@@ -441,7 +448,7 @@ public class admin extends javax.swing.JFrame {
 
             String kodeObat = tbObat.getValueAt(selectedRow, 0).toString();
 
-            String namaObat = txtkodeobat.getText();
+            String namaObat = txtnamaobat.getText();
             int hargaJual = Integer.parseInt(txthargajual.getText());
             int hargaBeli = Integer.parseInt(txthargabeli.getText());
             int stok = Integer.parseInt(txtstok.getText());
@@ -507,8 +514,8 @@ public class admin extends javax.swing.JFrame {
    protected void PilihObat () {
     int row = tbObat.getSelectedRow();
     if (row != -1) {
-        txtkodeobat.setText(tbObat.getValueAt(row, 0).toString());
-        txtnamaobat.setText(tbObat.getValueAt(row, 1).toString());
+        txtnamaobat.setText(tbObat.getValueAt(row, 0).toString());
+        txtkodeobat.setText(tbObat.getValueAt(row, 1).toString());
         txthargajual.setText(tbObat.getValueAt(row, 2).toString());
         txthargabeli.setText(tbObat.getValueAt(row, 3).toString());
         txtstok.setText(tbObat.getValueAt(row, 4).toString());
@@ -564,12 +571,12 @@ public class admin extends javax.swing.JFrame {
 
     protected void RftableObat() {
         // Set up table column names
-        Object[] columns = {"Kode Obat", "Nama Obat", "Stok", "Kemasan", "Kategori", "Suplier", "Golongan"};
+        Object[] columns = {"Kode Obat", "Nama Obat", "Stok" , "Harga Beli", "Kemasan", "Kategori", "Suplier", "Golongan"};
         DefaultTableModel tabmode = new DefaultTableModel(null, columns);
         TrfObat.setModel(tabmode);
 
         // SQL query
-        String sql = "SELECT obat.kode_obat, obat.nama_obat, obat.stok, obat.kemasan, "
+        String sql = "SELECT obat.kode_obat, obat.nama_obat, obat.stok,  obat.harga_beli, obat.kemasan, "
                     + "kategori_obat.nama_kategori, suplier.nama_perusahaan, obat.golongan "
                     + "FROM obat "
                     + "JOIN kategori_obat ON obat.id_kategori = kategori_obat.id_kategori "
@@ -586,6 +593,7 @@ public class admin extends javax.swing.JFrame {
                 String kode_obat = hasil.getString("kode_obat");
                 String nama_obat = hasil.getString("nama_obat");
                 String stok = hasil.getString("stok");
+                String harga_beli = hasil.getString("harga_beli");
                 String kemasan = hasil.getString("kemasan");
                 String kategori = hasil.getString("nama_kategori");  // mengambil nama kategori
                 String suplier = hasil.getString("nama_perusahaan");  // mengambil nama suplier
@@ -593,7 +601,7 @@ public class admin extends javax.swing.JFrame {
 
 
                 // Menambahkan data ke dalam tabel
-                String[] data = {kode_obat, nama_obat,  stok, kemasan, kategori, suplier, golongan};
+                String[] data = {kode_obat, nama_obat,  stok, harga_beli, kemasan, kategori, suplier, golongan};
                 tabmode.addRow(data);
             }
         } catch (SQLException e) {
@@ -604,10 +612,148 @@ public class admin extends javax.swing.JFrame {
     protected void pilihRfObat(){
      int pow = TrfObat.getSelectedRow();
     if (pow != -1) {
-        txtkdObat.setText(TrfObat.getValueAt(pow, 1).toString());
-        txtNamaObat.setText(TrfObat.getValueAt(pow, 2).toString());
+        txtkdObat.setText(TrfObat.getValueAt(pow, 0).toString());
+        txtNamaObat.setText(TrfObat.getValueAt(pow, 1).toString());
+        txtHargabeli.setText(TrfObat.getValueAt(pow, 3).toString());
+        txtnamaS.setText(TrfObat.getValueAt(pow, 6).toString());
     }
     }
+    
+        private String generateid_RF() {
+    String prefix = "RF";
+    String sql = "SELECT id_rf FROM rf_obat ORDER BY id_rf DESC LIMIT 1";
+    String newId = "";
+
+    try {
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+        if (rs.next()) {
+            String lastId = rs.getString("id_rf").substring(2); // Buang 'RF'
+            int number = Integer.parseInt(lastId) + 1;
+            newId = prefix + String.format("%04d", number); // Format: RF0001
+        } else {
+            newId = "RF0001"; // Jika belum ada data
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal generate ID: " + e.getMessage());
+    }
+
+    return newId;
+}
+        
+    protected void hitungTotalHarga() {
+    try {
+        int harga = Integer.parseInt(txtHargabeli.getText().replaceAll("[^\\d]", ""));
+        int jumlah = Integer.parseInt(txtJumlah.getText());
+        int total = harga * jumlah;
+        txttotalharga.setText(String.valueOf(total));
+    } catch (NumberFormatException e) {
+        txttotalharga.setText("0"); // fallback jika input belum valid
+    }
+}
+    private String generateID_RF() {
+    String prefix = "RF";
+    String sql = "SELECT id_rf FROM rf_obat ORDER BY id_rf DESC LIMIT 1";
+    String newId = "";
+
+    try {
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(sql);
+        if (rs.next()) {
+            String lastId = rs.getString("id_rf").substring(2);
+            int number = Integer.parseInt(lastId) + 1;
+            newId = prefix + String.format("%04d", number);
+        } else {
+            newId = "RF0001";
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal generate ID: " + e.getMessage());
+    }
+
+    return newId;
+}
+
+  protected void rf_PesanObat() {
+    try {
+        String idRF = generateID_RF();
+        String kodeObat = txtkdObat.getText();
+        String namaObat = txtNamaObat.getText();
+        String jumlahStr = txtJumlah.getText();
+        String hargaStr = txtHargabeli.getText();
+        String totalStr = txttotalharga.getText();
+                String tanggalRF = new SimpleDateFormat("yyyy-MM-dd").format(jDateChooser1.getDate());
+        String deskripsi = "Permintaan oleh admin";
+
+        // Validasi
+        if (kodeObat.isEmpty() || jumlahStr.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Lengkapi semua data!");
+            return;
+        }
+
+        int jumlah = Integer.parseInt(jumlahStr);
+        int harga = Integer.parseInt(hargaStr);
+        int total = jumlah * harga;
+
+        // Ambil nama suplier berdasarkan kode obat
+        String namaSuplier = txtnamaS.getText();
+
+        String sql = "INSERT INTO rf_obat (id_rf, tanggal_rf, deskripsi, nama_suplayer, kode_obat, nama_obat, harga_beli, jumlah_pesanan, total_harga, status) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        PreparedStatement pst = conn.prepareStatement(sql);
+        pst.setString(1, idRF);
+        pst.setString(2, tanggalRF);
+        pst.setString(3, deskripsi);
+        pst.setString(4, namaSuplier);
+        pst.setString(5, kodeObat);
+        pst.setString(6, namaObat);
+        pst.setInt(7, harga);
+        pst.setInt(8, jumlah);
+        pst.setInt(9, total);
+        pst.setString(10, "pending");
+
+        pst.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Pesanan berhasil dikirim.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal mengirim pesanan: " + e.getMessage());
+    }
+}
+
+    protected void Tb_RfObat() {
+    // Sesuaikan kolom sesuai struktur tabel rf_obat
+    Object[] Baris = {
+        "ID RF", "Tanggal", "Deskripsi", "Nama Suplier", 
+        "Kode Obat", "Nama Obat", "Harga Beli", 
+        "Jumlah Pesan", "Total Harga", "Status"
+    };
+    tabmode = new DefaultTableModel(null, Baris);
+    tbRf_Obat.setModel(tabmode); // Ganti dengan nama JTable yang benar jika bukan 'tableUser'
+
+    String sql = "SELECT * FROM rf_obat ORDER BY id_rf ASC";
+    try {
+        Statement stat = conn.createStatement();
+        ResultSet hasil = stat.executeQuery(sql);
+        while (hasil.next()) {
+            String id = hasil.getString("id_rf");
+            String tanggal = hasil.getString("tanggal_rf");
+            String deskripsi = hasil.getString("deskripsi");
+            String suplier = hasil.getString("nama_suplayer");
+            String kode = hasil.getString("kode_obat");
+            String nama = hasil.getString("nama_obat");
+            String harga = hasil.getString("harga_beli");
+            String jumlah = hasil.getString("jumlah_pesanan");
+            String total = hasil.getString("total_harga");
+            String status = hasil.getString("status");
+
+            String[] data = {id, tanggal, deskripsi, suplier, kode, nama, harga, jumlah, total, status};
+            tabmode.addRow(data);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Gagal tampilkan data: " + e.getMessage());
+    }
+}
+
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -695,15 +841,23 @@ public class admin extends javax.swing.JFrame {
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel54 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        txtHargabeli = new javax.swing.JTextField();
+        jLabel55 = new javax.swing.JLabel();
+        jLabel56 = new javax.swing.JLabel();
+        txttotalharga = new javax.swing.JTextField();
+        jLabel57 = new javax.swing.JLabel();
+        txtnamaS = new javax.swing.JTextField();
         pPenjualan = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         pPembelian = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tbRf_Obat = new javax.swing.JTable();
         pObat = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbObat = new javax.swing.JTable();
-        txtkodeobat = new javax.swing.JTextField();
+        txtnamaobat = new javax.swing.JTextField();
         txtkemasan = new javax.swing.JTextField();
         txthargajual = new javax.swing.JTextField();
         txthargabeli = new javax.swing.JTextField();
@@ -726,7 +880,7 @@ public class admin extends javax.swing.JFrame {
         cbsuplayer = new javax.swing.JComboBox<>();
         cbgolongan = new javax.swing.JComboBox<>();
         jLabel49 = new javax.swing.JLabel();
-        txtnamaobat = new javax.swing.JTextField();
+        txtkodeobat = new javax.swing.JTextField();
         txtcariObat = new javax.swing.JTextField();
         jLabel50 = new javax.swing.JLabel();
 
@@ -1175,7 +1329,7 @@ public class admin extends javax.swing.JFrame {
                     .addGroup(pSuplayerLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
             .addGroup(pSuplayerLayout.createSequentialGroup()
                 .addGroup(pSuplayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pSuplayerLayout.createSequentialGroup()
@@ -1295,7 +1449,7 @@ public class admin extends javax.swing.JFrame {
         getContentPane().add(pKategori);
         pKategori.setBounds(181, 66, 761, 627);
 
-        pRfobat.setBackground(new java.awt.Color(102, 0, 102));
+        pRfobat.setBackground(new java.awt.Color(51, 51, 51));
 
         jLabel8.setText("RF Obat");
 
@@ -1321,7 +1475,7 @@ public class admin extends javax.swing.JFrame {
 
         jLabel52.setText("Nama Obat");
 
-        jLabel53.setText("Jum;ah Pesanan");
+        jLabel53.setText("Jumlah Pesanan");
 
         jLabel54.setText("Tanggal");
 
@@ -1331,6 +1485,18 @@ public class admin extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+
+        jLabel55.setText("Harga Beli");
+
+        jLabel56.setText("Total Harga");
+
+        txttotalharga.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txttotalhargaKeyTyped(evt);
+            }
+        });
+
+        jLabel57.setText("Nama Suplier");
 
         javax.swing.GroupLayout pRfobatLayout = new javax.swing.GroupLayout(pRfobat);
         pRfobat.setLayout(pRfobatLayout);
@@ -1354,17 +1520,31 @@ public class admin extends javax.swing.JFrame {
                         .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
                         .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtkdObat)
-                            .addComponent(txtNamaObat, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                            .addComponent(txtJumlah))
-                        .addGap(35, 35, 35)
-                        .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(113, 113, 113))))
+                            .addComponent(txtNamaObat)
+                            .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(61, 61, 61)
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtnamaS))
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txttotalharga))
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtHargabeli)))
+                        .addGap(70, 70, 70))))
         );
         pRfobatLayout.setVerticalGroup(
             pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1375,20 +1555,37 @@ public class admin extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
                 .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addGroup(pRfobatLayout.createSequentialGroup()
                         .addComponent(jLabel51, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtkdObat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNamaObat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(56, 56, 56)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel53, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pRfobatLayout.createSequentialGroup()
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel54, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel55, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtHargabeli, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel57, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtnamaS, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pRfobatLayout.createSequentialGroup()
+                                .addComponent(txtkdObat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNamaObat, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(pRfobatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel56, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txttotalharga, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(12, 12, 12)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(109, Short.MAX_VALUE))
         );
@@ -1422,23 +1619,44 @@ public class admin extends javax.swing.JFrame {
 
         pPembelian.setBackground(new java.awt.Color(153, 153, 255));
 
-        jLabel11.setText("Pembelian Obat");
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("List PengajuanPembelian Obat");
+
+        tbRf_Obat.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(tbRf_Obat);
 
         javax.swing.GroupLayout pPembelianLayout = new javax.swing.GroupLayout(pPembelian);
         pPembelian.setLayout(pPembelianLayout);
         pPembelianLayout.setHorizontalGroup(
             pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pPembelianLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPembelianLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(645, Short.MAX_VALUE))
+                .addGroup(pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pPembelianLayout.createSequentialGroup()
+                        .addGap(0, 37, Short.MAX_VALUE)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(41, 41, 41))
         );
         pPembelianLayout.setVerticalGroup(
             pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pPembelianLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel11)
-                .addContainerGap(605, Short.MAX_VALUE))
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(224, Short.MAX_VALUE))
         );
 
         getContentPane().add(pPembelian);
@@ -1615,12 +1833,14 @@ public class admin extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel49)
-                    .addComponent(txtkodeobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtkodeobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel49))
                 .addGap(18, 18, 18)
                 .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pObatLayout.createSequentialGroup()
-                        .addComponent(jLabel7)
+                        .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtnamaobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
                         .addGap(18, 18, 18)
                         .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txthargajual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1636,8 +1856,7 @@ public class admin extends javax.swing.JFrame {
                     .addGroup(pObatLayout.createSequentialGroup()
                         .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtkemasan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18)
-                            .addComponent(txtnamaobat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel18))
                         .addGap(18, 18, 18)
                         .addGroup(pObatLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbkategori, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1978,12 +2197,19 @@ public class admin extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        rf_PesanObat();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void TrfObatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TrfObatMouseClicked
         // TODO add your handling code here:
         pilihRfObat();
+        
     }//GEN-LAST:event_TrfObatMouseClicked
+
+    private void txttotalhargaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttotalhargaKeyTyped
+        // TODO add your handling code here:
+        hitungTotalHarga();
+    }//GEN-LAST:event_txttotalhargaKeyTyped
 
     /**
      * @param args the command line arguments
@@ -2085,6 +2311,9 @@ public class admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel55;
+    private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2093,6 +2322,7 @@ public class admin extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable jTablesuplayer;
     private javax.swing.JPanel jtest2;
     private javax.swing.JPanel jtest3;
@@ -2113,6 +2343,8 @@ public class admin extends javax.swing.JFrame {
     private javax.swing.JPanel pn_navbar;
     private javax.swing.JPanel pn_sidebar;
     private javax.swing.JTable tbObat;
+    private javax.swing.JTable tbRf_Obat;
+    private javax.swing.JTextField txtHargabeli;
     private javax.swing.JTextField txtJumlah;
     private javax.swing.JTextField txtNamaObat;
     private javax.swing.JTextArea txtalamat;
@@ -2124,6 +2356,7 @@ public class admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtkdObat;
     private javax.swing.JTextField txtkemasan;
     private javax.swing.JTextField txtkodeobat;
+    private javax.swing.JTextField txtnamaS;
     private javax.swing.JTextField txtnamabank;
     private javax.swing.JTextField txtnamaobat;
     private javax.swing.JTextField txtnamaperusahaan;
@@ -2132,6 +2365,7 @@ public class admin extends javax.swing.JFrame {
     private javax.swing.JTextField txtnorekening;
     private javax.swing.JTextField txtnotlp;
     private javax.swing.JTextField txtstok;
+    private javax.swing.JTextField txttotalharga;
     // End of variables declaration//GEN-END:variables
 
     private void loadData() {
