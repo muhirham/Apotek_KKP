@@ -53,9 +53,9 @@ public class admin extends javax.swing.JFrame {
         pPembelian.setVisible(false);
         pSuplayer.setVisible(false);
         
-        if (txtnamaobat.getText().isEmpty()) {
-            txtnamaobat.setText("Kode Obat");  // Menampilkan placeholder jika field kosong
-            txtnamaobat.setForeground(Color.GRAY);  // Mengatur warna placeholder menjadi abu-abu
+        if (txtkodeobat.getText().isEmpty()) {
+            txtkodeobat.setText("Kode Obat");  // Menampilkan placeholder jika field kosong
+            txtkodeobat.setForeground(Color.GRAY);  // Mengatur warna placeholder menjadi abu-abu
         }
         
        
@@ -66,7 +66,7 @@ public class admin extends javax.swing.JFrame {
         RftableObat();
         cbKategori();
         cbSuplayer();
-        Tb_RfObat();
+        tbPesanan_RfObat();
         
         setSize(947, 650);
         
@@ -74,6 +74,15 @@ public class admin extends javax.swing.JFrame {
 
         // Make the JFrame visible
         setVisible(true);
+        
+        Timer timer = new Timer(3000, new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+        tbPesanan_RfObat();
+        
+       }
+        });
+        timer.start();
+
     }
     
     
@@ -131,8 +140,8 @@ public class admin extends javax.swing.JFrame {
     }
     protected void datatableObat() {
         // Set up table column names
-        Object[] columns = {"Kode Obat", "Nama Obat", "Harga Jual", "Harga Beli", "Stok", "Kemasan", "Kategori", "Suplier", "Golongan", "No Registrasi BPOM"};
-        DefaultTableModel tabmode = new DefaultTableModel(null, columns);
+        Object[] pat = {"Kode Obat", "Nama Obat", "Harga Jual", "Harga Beli", "Stok", "Kemasan", "Kategori", "Suplier", "Golongan", "No Registrasi BPOM"};
+        tabmode = new DefaultTableModel(null, pat);
         tbObat.setModel(tabmode);
 
         // SQL query
@@ -228,13 +237,13 @@ public class admin extends javax.swing.JFrame {
     
     protected void dataterpilihSuplayer() {        
         int bar = jTablesuplayer.getSelectedRow();  // Get the selected row index
-        String id = tabmode.getValueAt(bar, 0).toString();
-        String nama_perusahaan = tabmode.getValueAt(bar, 1).toString();
-        String alamat = tabmode.getValueAt(bar, 2).toString();
-        String contact_person = tabmode.getValueAt(bar, 3).toString();
-        String no_tlp = tabmode.getValueAt(bar, 4).toString();
-        String nama_bank = tabmode.getValueAt(bar, 5).toString();
-        String no_rekening = tabmode.getValueAt(bar, 6).toString();  // Column 6 for the bank name
+        String id = jTablesuplayer.getValueAt(bar, 0).toString();
+        String nama_perusahaan = jTablesuplayer.getValueAt(bar, 1).toString();
+        String alamat = jTablesuplayer.getValueAt(bar, 2).toString();
+        String contact_person = jTablesuplayer.getValueAt(bar, 3).toString();
+        String no_tlp = jTablesuplayer.getValueAt(bar, 4).toString();
+        String nama_bank = jTablesuplayer.getValueAt(bar, 5).toString();
+        String no_rekening = jTablesuplayer.getValueAt(bar, 6).toString();  // Column 6 for the bank name
 
         // Set the retrieved data into respective input fields
         txtid.setText(id);
@@ -339,18 +348,25 @@ public class admin extends javax.swing.JFrame {
     }
     
     protected void deleteSuplayer(){
-        int delete = JOptionPane.showConfirmDialog(null,"hapus", 
-                "Konfirmasi Dialog",JOptionPane.YES_NO_OPTION);
-        if(delete==0){
-            String sql="delete from suplier where id_suplayer='"+txtid.getText()+"'";
-            try {
-                PreparedStatement stat = conn.prepareStatement(sql);
+        String id = txtid.getText();
+
+        if (id.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Pilih data dari tabel terlebih dahulu");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(null, "Yakin ingin menghapus data ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            String sql = "DELETE FROM suplier WHERE id_suplayer=?";
+
+            try (PreparedStatement stat = conn.prepareStatement(sql)) {
+                stat.setString(1, id);
                 stat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "Data Berhasil Dihapus");
+                JOptionPane.showMessageDialog(null, "Data berhasil dihapus");
                 clearSuplayer();
                 datatableSublayer();
-            }catch(SQLException e){
-                JOptionPane.showMessageDialog(null, "Data Gagal Dihapus");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Gagal menghapus data: " + e.getMessage());
             }
         }
     }
@@ -384,10 +400,10 @@ public class admin extends javax.swing.JFrame {
    private void tambahObat() {
     try {
         String kodeObat = autoKodeObat();
-        txtnamaobat.setText(kodeObat); // tampilkan ke user (opsional)
-        txtnamaobat.setEnabled(false);
+        txtkodeobat.setText(kodeObat); // tampilkan ke user (opsional)
+        txtkodeobat.setEnabled(false);
 
-        String namaObat = txtkodeobat.getText();
+        String namaObat = txtnamaobat.getText();
         int hargaJual = Integer.parseInt(txthargajual.getText());
         int hargaBeli = Integer.parseInt(txthargabeli.getText());
         int stok = Integer.parseInt(txtstok.getText());
@@ -418,6 +434,7 @@ public class admin extends javax.swing.JFrame {
         pst.executeUpdate();
         JOptionPane.showMessageDialog(null, "Data obat berhasil disimpan.");
         datatableObat();
+        RftableObat();
         clearObat();
     } catch (SQLException | NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "Error menyimpan data: " + e.getMessage());
@@ -481,6 +498,7 @@ public class admin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Data obat berhasil diperbarui.");
             datatableObat(); // refresh tabel
             clearObat();
+            RftableObat();
         } catch (SQLException | NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Error mengedit data: " + e.getMessage());
         }
@@ -506,6 +524,7 @@ public class admin extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Data obat berhasil dihapus.");
             datatableObat(); // refresh tabel
             clearObat();
+            RftableObat();
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error menghapus data: " + e.getMessage());
@@ -514,8 +533,8 @@ public class admin extends javax.swing.JFrame {
    protected void PilihObat () {
     int row = tbObat.getSelectedRow();
     if (row != -1) {
-        txtnamaobat.setText(tbObat.getValueAt(row, 0).toString());
-        txtkodeobat.setText(tbObat.getValueAt(row, 1).toString());
+        txtkodeobat.setText(tbObat.getValueAt(row, 0).toString());
+        txtnamaobat.setText(tbObat.getValueAt(row, 1).toString());
         txthargajual.setText(tbObat.getValueAt(row, 2).toString());
         txthargabeli.setText(tbObat.getValueAt(row, 3).toString());
         txtstok.setText(tbObat.getValueAt(row, 4).toString());
@@ -571,8 +590,8 @@ public class admin extends javax.swing.JFrame {
 
     protected void RftableObat() {
         // Set up table column names
-        Object[] columns = {"Kode Obat", "Nama Obat", "Stok" , "Harga Beli", "Kemasan", "Kategori", "Suplier", "Golongan"};
-        DefaultTableModel tabmode = new DefaultTableModel(null, columns);
+        Object[] Columns = {"Kode Obat", "Nama Obat", "Stok" , "Harga Beli", "Kemasan", "Kategori", "Suplier", "Golongan"};
+        tabmode = new DefaultTableModel(null, Columns);
         TrfObat.setModel(tabmode);
 
         // SQL query
@@ -610,36 +629,14 @@ public class admin extends javax.swing.JFrame {
     }
     
     protected void pilihRfObat(){
-     int pow = TrfObat.getSelectedRow();
-    if (pow != -1) {
-        txtkdObat.setText(TrfObat.getValueAt(pow, 0).toString());
-        txtNamaObat.setText(TrfObat.getValueAt(pow, 1).toString());
-        txtHargabeli.setText(TrfObat.getValueAt(pow, 3).toString());
-        txtnamaS.setText(TrfObat.getValueAt(pow, 6).toString());
+       int pow = TrfObat.getSelectedRow();
+       if (pow != -1) {
+           txtkdObat.setText(TrfObat.getValueAt(pow, 0).toString());
+           txtNamaObat.setText(TrfObat.getValueAt(pow, 1).toString());
+           txtHargabeli.setText(TrfObat.getValueAt(pow, 3).toString());
+           txtnamaS.setText(TrfObat.getValueAt(pow, 6).toString());
+       }
     }
-    }
-    
-        private String generateid_RF() {
-    String prefix = "RF";
-    String sql = "SELECT id_rf FROM rf_obat ORDER BY id_rf DESC LIMIT 1";
-    String newId = "";
-
-    try {
-        Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery(sql);
-        if (rs.next()) {
-            String lastId = rs.getString("id_rf").substring(2); // Buang 'RF'
-            int number = Integer.parseInt(lastId) + 1;
-            newId = prefix + String.format("%04d", number); // Format: RF0001
-        } else {
-            newId = "RF0001"; // Jika belum ada data
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Gagal generate ID: " + e.getMessage());
-    }
-
-    return newId;
-}
         
     protected void hitungTotalHarga() {
     try {
@@ -673,6 +670,16 @@ public class admin extends javax.swing.JFrame {
     return newId;
 }
 
+    protected void clear_Rfobat(){
+    txtkdObat.setText(null);
+    txtNamaObat.setText(null);
+    txtJumlah.setText(null);
+    txtHargabeli.setText(null);
+    txttotalharga.setText(null);
+    jDateChooser1.setDate(null);
+    txtnamaS.setText(null);
+    }
+    
   protected void rf_PesanObat() {
     try {
         String idRF = generateID_RF();
@@ -713,13 +720,15 @@ public class admin extends javax.swing.JFrame {
         pst.setString(10, "pending");
 
         pst.executeUpdate();
+        tbPesanan_RfObat();
+        clear_Rfobat();
         JOptionPane.showMessageDialog(null, "Pesanan berhasil dikirim.");
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null, "Gagal mengirim pesanan: " + e.getMessage());
     }
 }
 
-    protected void Tb_RfObat() {
+    protected void tbPesanan_RfObat() {
     // Sesuaikan kolom sesuai struktur tabel rf_obat
     Object[] Baris = {
         "ID RF", "Tanggal", "Deskripsi", "Nama Suplier", 
@@ -752,7 +761,8 @@ public class admin extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Gagal tampilkan data: " + e.getMessage());
     }
 }
-
+    
+    
     
     
     /**
@@ -802,6 +812,7 @@ public class admin extends javax.swing.JFrame {
         jLabel46 = new javax.swing.JLabel();
         pHome = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
+        jButton11 = new javax.swing.JButton();
         pSuplayer = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -853,6 +864,7 @@ public class admin extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tbRf_Obat = new javax.swing.JTable();
+        jButton10 = new javax.swing.JButton();
         pObat = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -1090,7 +1102,7 @@ public class admin extends javax.swing.JFrame {
         jLabel37.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icons8-users-30.png"))); // NOI18N
         jtestSuplayer1.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 30));
 
-        jLabel38.setText("Data suplayar");
+        jLabel38.setText("Data supplier");
         jtestSuplayer1.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 80, 30));
 
         pn_sidebar.add(jtestSuplayer1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 170, 30));
@@ -1174,21 +1186,35 @@ public class admin extends javax.swing.JFrame {
 
         jLabel12.setText("Home Dashboard");
 
+        jButton11.setText("Close");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pHomeLayout = new javax.swing.GroupLayout(pHome);
         pHome.setLayout(pHomeLayout);
         pHomeLayout.setHorizontalGroup(
             pHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pHomeLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(645, Short.MAX_VALUE))
+                .addGroup(pHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pHomeLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pHomeLayout.createSequentialGroup()
+                        .addGap(301, 301, 301)
+                        .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(356, Short.MAX_VALUE))
         );
         pHomeLayout.setVerticalGroup(
             pHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pHomeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel12)
-                .addContainerGap(605, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 362, Short.MAX_VALUE)
+                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(210, 210, 210))
         );
 
         getContentPane().add(pHome);
@@ -1197,7 +1223,7 @@ public class admin extends javax.swing.JFrame {
         pSuplayer.setBackground(new java.awt.Color(0, 255, 204));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel17.setText("DATA SUPLAYER");
+        jLabel17.setText("DATA SUPPLIER");
 
         jTablesuplayer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1294,6 +1320,11 @@ public class admin extends javax.swing.JFrame {
                 jButton5MouseClicked(evt);
             }
         });
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         txtid.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1324,12 +1355,12 @@ public class admin extends javax.swing.JFrame {
                     .addGroup(pSuplayerLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 388, Short.MAX_VALUE)
                         .addComponent(txtcariSuplayer, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pSuplayerLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
             .addGroup(pSuplayerLayout.createSequentialGroup()
                 .addGroup(pSuplayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pSuplayerLayout.createSequentialGroup()
@@ -1449,7 +1480,7 @@ public class admin extends javax.swing.JFrame {
         getContentPane().add(pKategori);
         pKategori.setBounds(181, 66, 761, 627);
 
-        pRfobat.setBackground(new java.awt.Color(51, 51, 51));
+        pRfobat.setBackground(new java.awt.Color(0, 153, 153));
 
         jLabel8.setText("RF Obat");
 
@@ -1477,6 +1508,17 @@ public class admin extends javax.swing.JFrame {
 
         jLabel53.setText("Jumlah Pesanan");
 
+        txtJumlah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtJumlahActionPerformed(evt);
+            }
+        });
+        txtJumlah.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtJumlahKeyReleased(evt);
+            }
+        });
+
         jLabel54.setText("Tanggal");
 
         jButton1.setText("Pesan");
@@ -1489,12 +1531,6 @@ public class admin extends javax.swing.JFrame {
         jLabel55.setText("Harga Beli");
 
         jLabel56.setText("Total Harga");
-
-        txttotalharga.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txttotalhargaKeyTyped(evt);
-            }
-        });
 
         jLabel57.setText("Nama Suplier");
 
@@ -1636,18 +1672,27 @@ public class admin extends javax.swing.JFrame {
         ));
         jScrollPane5.setViewportView(tbRf_Obat);
 
+        jButton10.setText("Cetak");
+
         javax.swing.GroupLayout pPembelianLayout = new javax.swing.GroupLayout(pPembelian);
         pPembelian.setLayout(pPembelianLayout);
         pPembelianLayout.setHorizontalGroup(
             pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPembelianLayout.createSequentialGroup()
+            .addGroup(pPembelianLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pPembelianLayout.createSequentialGroup()
-                        .addGap(0, 37, Short.MAX_VALUE)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 676, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(41, 41, 41))
+                .addGroup(pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPembelianLayout.createSequentialGroup()
+                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 713, Short.MAX_VALUE)
+                        .addGap(41, 41, 41))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPembelianLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPembelianLayout.createSequentialGroup()
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 734, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pPembelianLayout.createSequentialGroup()
+                                .addComponent(jButton10)
+                                .addGap(114, 114, 114))))))
         );
         pPembelianLayout.setVerticalGroup(
             pPembelianLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1655,8 +1700,10 @@ public class admin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(224, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(jButton10)
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         getContentPane().add(pPembelian);
@@ -2206,10 +2253,26 @@ public class admin extends javax.swing.JFrame {
         
     }//GEN-LAST:event_TrfObatMouseClicked
 
-    private void txttotalhargaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttotalhargaKeyTyped
+    private void txtJumlahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJumlahActionPerformed
         // TODO add your handling code here:
-        hitungTotalHarga();
-    }//GEN-LAST:event_txttotalhargaKeyTyped
+         hitungTotalHarga();
+         
+    }//GEN-LAST:event_txtJumlahActionPerformed
+
+    private void txtJumlahKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtJumlahKeyReleased
+        // TODO add your handling code here:
+         hitungTotalHarga();
+    }//GEN-LAST:event_txtJumlahKeyReleased
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        new login().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2252,6 +2315,8 @@ public class admin extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbkategori;
     private javax.swing.JComboBox<String> cbsuplayer;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
